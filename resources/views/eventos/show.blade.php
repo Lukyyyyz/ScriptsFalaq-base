@@ -44,8 +44,18 @@
                         <span>{{ $pergunta->created_at->format('d/m/Y H:i') }}</span>
                     </div>
 
+                    <form action="{{ route('perguntas.votar', $pergunta) }}" method="POST" class="mt-3 d-inline-block me-2">
+                        @csrf
+                        <button type="submit"
+                                class="btn btn-sm fw-bold {{ $pergunta->votado ? 'btn-primary' : 'btn-outline-primary' }}"
+                                title="{{ $pergunta->votado ? 'Clique para remover seu voto' : 'Clique para votar' }}">
+                            {{ $pergunta->votado ? '👍 Votado' : '👍 Upvote' }}
+                            <span class="badge bg-light text-dark ms-1">{{ $pergunta->votos_count }}</span>
+                        </button>
+                    </form>
+
                     @can('delete', $pergunta)
-                        <form action="{{ route('perguntas.destroy', $pergunta) }}" method="POST" class="mt-3"
+                        <form action="{{ route('perguntas.destroy', $pergunta) }}" method="POST" class="mt-3 d-inline-block"
                               onsubmit="return confirm('Deseja realmente excluir esta pergunta?')">
                             @csrf
                             @method('DELETE')
